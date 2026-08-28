@@ -17,11 +17,11 @@ npm run dev
 
 El repositorio incluye `render.yaml` para desplegar frontend y API como un único Web Service.
 
-- Build Command: `npm run render-build`
+- Build Command: `npm run build` (también se admite `npm run render-build`)
 - Start Command: `npm start`
 - Health Check Path: `/api/health`
 
-Si el servicio se configura manualmente en Render, usá esos mismos valores y dejá el Root Directory vacío.
+Si el servicio se configura manualmente en Render, usá esos mismos valores y dejá el Root Directory vacío. El comando de build instala por sí mismo las dependencias del frontend y del backend.
 
 ## Alcance actual
 
