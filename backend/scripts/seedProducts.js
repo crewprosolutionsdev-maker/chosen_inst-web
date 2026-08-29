@@ -12,7 +12,7 @@ const defaultPrice = Number(process.env.DEFAULT_PRODUCT_PRICE || 0);
 const catalog = [
   ['Kairos', 'kairos', 'abanicos_kairos.jpeg'],
   ['Kiná', 'kina', 'abanico-kina.jpeg'],
-  ['Eben-ezer', 'eben-ezer', 'abanico_eben-ezer.jpeg'],
+  ['Hallel', 'hallel', 'abanico_hallel.jpeg'],
   ['Emuná', 'emuna', 'abanico_emuna.jpeg'],
   ['Jésed', 'jesed', 'abanico_jesed.jpeg'],
   ['Ruáj', 'ruaj', 'abanico_ruaj.jpeg'],
@@ -43,6 +43,10 @@ for (const [name, slug, filename] of catalog) {
   );
   console.log(`✓ Abanico ${name}`);
 }
+
+const obsoleteSlugs = ['eben-ezer'];
+await Product.deleteMany({ slug: { $in: obsoleteSlugs } });
+await Promise.all(obsoleteSlugs.map(slug => cloudinary.uploader.destroy(`chosen/products/${slug}`)));
 
 console.log('Catálogo cargado en Cloudinary y MongoDB');
 process.exit(0);
