@@ -1,6 +1,8 @@
-import 'dotenv/config';
+import dotenv from 'dotenv';
 import { app } from './app.js';
 import { connectDatabase } from './config/database.js';
+
+dotenv.config({ path: new URL('../../.env', import.meta.url) });
 
 const port = process.env.PORT || 3001;
 

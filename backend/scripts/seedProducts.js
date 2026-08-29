@@ -1,8 +1,10 @@
-import 'dotenv/config';
+import dotenv from 'dotenv';
 import path from 'node:path';
 import { connectDatabase } from '../src/config/database.js';
 import { configureCloudinary } from '../src/config/cloudinary.js';
 import { Product } from '../src/models/Product.js';
+
+dotenv.config({ path: new URL('../../.env', import.meta.url) });
 
 const imageDirectory = process.env.PRODUCT_IMAGE_DIR;
 const defaultPrice = Number(process.env.DEFAULT_PRODUCT_PRICE || 0);
@@ -37,7 +39,7 @@ for (const [name, slug, filename] of catalog) {
       image: { url: upload.secure_url, publicId: upload.public_id, width: upload.width, height: upload.height },
       stock: 10, featured: true, active: true,
     },
-    { upsert: true, new: true, setDefaultsOnInsert: true },
+    { upsert: true, returnDocument: 'after', setDefaultsOnInsert: true },
   );
   console.log(`✓ Abanico ${name}`);
 }
