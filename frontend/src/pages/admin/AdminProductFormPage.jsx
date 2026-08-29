@@ -12,6 +12,7 @@ export function AdminProductFormPage() {
   const [file, setFile] = useState(null);
   const [preview, setPreview] = useState('');
   const [error, setError] = useState('');
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     adminService.categories().then(items => {
@@ -36,12 +37,19 @@ export function AdminProductFormPage() {
   const submit = async event => {
     event.preventDefault();
     try {
+      setSaving(true);
+      setError('');
       const data = new FormData();
-      Object.entries(form).forEach(([key, value]) => data.append(key, value));
+      ['name', 'category', 'price', 'compareAt', 'stock', 'description', 'active', 'featured']
+        .forEach(key => data.append(key, form[key] ?? ''));
       if (file) data.append('image', file);
       await adminService.saveProduct(id, data);
-      navigate('/admin/productos');
-    } catch (requestError) { setError(requestError.message); }
+      navigate('/admin/productos', { replace: true });
+    } catch (requestError) {
+      setError(requestError.message);
+    } finally {
+      setSaving(false);
+    }
   };
 
   return <section className="admin-page">
@@ -67,7 +75,7 @@ export function AdminProductFormPage() {
         <label><input name="active" type="checkbox" checked={form.active} onChange={change} /> Activo</label>
         <label><input name="featured" type="checkbox" checked={form.featured} onChange={change} /> Destacado</label>
       </div>
-      <button className="admin-primary">GUARDAR PRODUCTO</button>
+      <button type="submit" className="admin-primary" disabled={saving}>{saving ? 'GUARDANDO…' : 'GUARDAR PRODUCTO'}</button>
     </form>
   </section>;
 }
