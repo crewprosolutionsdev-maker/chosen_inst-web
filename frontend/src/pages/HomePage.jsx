@@ -15,7 +15,7 @@ export function HomePage({ onAdd }) {
                 <Link className="btn btn-dark" to="/productos">VER COLECCIÓN <ArrowRight/></Link>
             </div>
             <div className="hero-art">
-                <span>CHOSEN</span>
+                <img src="/assets/pescaditos-transparent.png" alt="Símbolo de peces de Chosen"/>
             </div>
         </section>
         <FeaturedCategories/>
