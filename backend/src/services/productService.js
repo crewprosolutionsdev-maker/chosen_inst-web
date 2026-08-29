@@ -8,17 +8,19 @@ const normalizeProduct = product => ({
   image: typeof product.image === 'string' ? product.image : product.image?.url,
 });
 
-export async function listProducts({ query = '', featured } = {}) {
+export async function listProducts({ query = '', featured, category } = {}) {
   if (mongoose.connection.readyState !== 1) {
     return fallbackProducts.filter(product =>
       (!query || product.name.toLowerCase().includes(query.toLowerCase())) &&
-      (featured === undefined || product.featured === featured)
+      (featured === undefined || product.featured === featured) &&
+      (!category || product.category === category)
     );
   }
 
   const filter = { active: true };
   if (query) filter.name = { $regex: query, $options: 'i' };
   if (featured !== undefined) filter.featured = featured;
+  if (category) filter.category = category;
   return (await Product.find(filter).sort({ featured: -1, createdAt: -1 }).lean()).map(normalizeProduct);
 }
 

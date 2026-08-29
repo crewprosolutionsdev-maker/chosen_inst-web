@@ -3,6 +3,7 @@ import path from 'node:path';
 import { connectDatabase } from '../src/config/database.js';
 import { configureCloudinary } from '../src/config/cloudinary.js';
 import { Product } from '../src/models/Product.js';
+import { Category } from '../src/models/Category.js';
 
 dotenv.config({ path: new URL('../../.env', import.meta.url) });
 
@@ -47,6 +48,15 @@ for (const [name, slug, filename] of catalog) {
 const obsoleteSlugs = ['eben-ezer'];
 await Product.deleteMany({ slug: { $in: obsoleteSlugs } });
 await Promise.all(obsoleteSlugs.map(slug => cloudinary.uploader.destroy(`chosen/products/${slug}`)));
+
+const categoryUpload = await cloudinary.uploader.upload(path.join(imageDirectory, 'abanicos_kairos.jpeg'), {
+  folder: 'chosen/categories', public_id: 'abanicos', overwrite: true, resource_type: 'image',
+});
+await Category.findOneAndUpdate(
+  { slug: 'abanicos' },
+  { name: 'Abanicos', slug: 'abanicos', order: 1, active: true, image: { url: categoryUpload.secure_url, publicId: categoryUpload.public_id } },
+  { upsert: true, returnDocument: 'after', setDefaultsOnInsert: true },
+);
 
 console.log('Catálogo cargado en Cloudinary y MongoDB');
 process.exit(0);

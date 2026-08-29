@@ -3,7 +3,7 @@ import * as productService from '../services/productService.js';
 export async function getProducts(req, res, next) {
   try {
     const featured = req.query.featured === undefined ? undefined : req.query.featured === 'true';
-    res.json(await productService.listProducts({ query: req.query.q, featured }));
+    res.json(await productService.listProducts({ query: req.query.q, featured, category: req.query.category }));
   } catch (error) { next(error); }
 }
 

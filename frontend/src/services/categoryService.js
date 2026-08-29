@@ -1,0 +1,1 @@
+export const categoryService = { list: async () => { const response = await fetch('/api/categories'); if (!response.ok) throw new Error('No pudimos cargar las categorías'); return response.json(); } };

@@ -5,15 +5,16 @@ export function useProducts(filters = {}) {
   const [state, setState] = useState({ products: [], loading: true, error: '' });
   const query = filters.query || '';
   const featured = filters.featured;
+  const category = filters.category || '';
 
   useEffect(() => {
     let active = true;
     setState(current => ({ ...current, loading: true, error: '' }));
-    productService.list({ query, featured })
+    productService.list({ query, featured, category })
       .then(products => active && setState({ products, loading: false, error: '' }))
       .catch(error => active && setState({ products: [], loading: false, error: error.message }));
     return () => { active = false; };
-  }, [query, featured]);
+  }, [query, featured, category]);
   return state;
 }
 

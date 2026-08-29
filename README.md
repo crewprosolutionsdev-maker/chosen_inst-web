@@ -12,6 +12,7 @@ npm run dev
 
 - Frontend: http://localhost:5173
 - API: http://localhost:3001/api/products
+- Panel administrativo: http://localhost:5173/admin
 
 ## Deploy en Render
 
@@ -23,9 +24,19 @@ El repositorio incluye `render.yaml` para desplegar frontend y API como un únic
 
 Si el servicio se configura manualmente en Render, usá esos mismos valores y dejá el Root Directory vacío. El comando de build instala por sí mismo las dependencias del frontend y del backend.
 
+## Panel administrativo
+
+El panel permite administrar únicamente el contenido comercial del MVP:
+
+- Categorías visibles en el homepage, su imagen y orden.
+- Productos, precios, stock, descripción, estado e imagen.
+- Imágenes almacenadas directamente en Cloudinary.
+
+Configurá `ADMIN_PASSWORD` y `JWT_SECRET` en `.env` y también en Render. Ninguna de estas credenciales debe subirse al repositorio.
+
 ## Alcance actual
 
-Catálogo, búsqueda, detalle de producto, carrito persistente, contacto, newsletter visual y cierre asistido por WhatsApp. La API local deja preparada la migración a MongoDB/Cloudinary y el futuro panel administrativo.
+Homepage dinámico por categorías, catálogo filtrable, búsqueda, detalle de producto, carrito persistente, contacto, newsletter visual, cierre asistido por WhatsApp y panel administrativo protegido.
 
 ## Catálogo con MongoDB y Cloudinary
 

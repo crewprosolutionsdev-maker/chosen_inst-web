@@ -1,0 +1,3 @@
+import { NavLink, Outlet, useNavigate } from 'react-router-dom';
+import { adminAuth } from '../services/adminService';
+export function AdminLayout() { const navigate = useNavigate(); const logout = () => { adminAuth.clear(); navigate('/admin/login'); }; return <div className="admin-shell"><aside className="admin-sidebar"><img src="/assets/chosen-logo.webp" alt="Chosen"/><span>ADMINISTRACIÓN</span><nav><NavLink to="/admin/productos">Productos</NavLink><NavLink to="/admin/categorias">Categorías del home</NavLink></nav><button onClick={logout}>Cerrar sesión</button></aside><main className="admin-content"><Outlet/></main></div>; }

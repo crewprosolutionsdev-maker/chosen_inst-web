@@ -5,10 +5,11 @@ const request = async path => {
 };
 
 export const productService = {
-  list: ({ query = '', featured } = {}) => {
+  list: ({ query = '', featured, category = '' } = {}) => {
     const params = new URLSearchParams();
     if (query) params.set('q', query);
     if (featured !== undefined) params.set('featured', featured);
+    if (category) params.set('category', category);
     return request(`/api/products?${params}`);
   },
   getBySlug: slug => request(`/api/products/${slug}`),
