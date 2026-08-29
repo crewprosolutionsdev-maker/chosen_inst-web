@@ -1,0 +1,2 @@
+import { ArrowRight } from 'lucide-react';
+export function Newsletter() { return <section className="newsletter"><div><span className="eyebrow">NO TE PIERDAS NADA</span><h2>Entrá al mundo Chosen.</h2><p>Novedades, lanzamientos y beneficios exclusivos.</p></div><form onSubmit={event => event.preventDefault()}><input type="email" placeholder="Tu email"/><button>QUIERO SUMARME <ArrowRight/></button></form></section>; }
