@@ -27,5 +27,5 @@ app.use((req, res, next) => {
 });
 app.use((error, _req, res, _next) => {
   console.error(error);
-  res.status(500).json({ message: 'Ocurrió un error inesperado' });
+  res.status(error.status || 500).json({ message: error.status ? error.message : 'Ocurrió un error inesperado' });
 });
