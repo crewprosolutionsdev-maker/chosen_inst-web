@@ -6,6 +6,7 @@ import { productRouter } from './routes/productRoutes.js';
 import { adminRouter } from './routes/adminRoutes.js';
 import { authRouter } from './routes/authRoutes.js';
 import { categoryRouter } from './routes/categoryRoutes.js';
+import { checkoutRouter } from './routes/checkoutRoutes.js';
 
 const currentDirectory = path.dirname(fileURLToPath(import.meta.url));
 const frontendDirectory = path.resolve(currentDirectory, '../../frontend/dist');
@@ -18,6 +19,7 @@ app.use('/api/auth', authRouter);
 app.use('/api/products', productRouter);
 app.use('/api/categories', categoryRouter);
 app.use('/api/admin', adminRouter);
+app.use('/api', checkoutRouter);
 app.use(express.static(frontendDirectory));
 app.use((req, res, next) => {
   if (req.method !== 'GET' || req.path.startsWith('/api/')) return next();

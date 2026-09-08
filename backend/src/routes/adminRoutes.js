@@ -3,6 +3,7 @@ import { createAdminProduct, deleteAdminProduct, getAdminProduct, listAdminProdu
 import { createCategory, deleteCategory, listAdminCategories, updateCategory } from '../controllers/categoryController.js';
 import { requireAdmin } from '../middleware/auth.js';
 import { uploadImage } from '../middleware/upload.js';
+import { adminSettings, updateSettings } from '../controllers/settingsController.js';
 
 export const adminRouter = Router();
 adminRouter.use(requireAdmin);
@@ -15,3 +16,5 @@ adminRouter.get('/categories', listAdminCategories);
 adminRouter.post('/categories', uploadImage.single('image'), createCategory);
 adminRouter.put('/categories/:id', uploadImage.single('image'), updateCategory);
 adminRouter.delete('/categories/:id', deleteCategory);
+adminRouter.get('/settings', adminSettings);
+adminRouter.put('/settings', updateSettings);

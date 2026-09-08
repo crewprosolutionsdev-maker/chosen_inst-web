@@ -1,0 +1,2 @@
+const json = async (path, options) => { const response = await fetch(path, options); const data = await response.json().catch(() => ({})); if (!response.ok) throw new Error(data.message || 'No se pudo completar la operación'); return data; };
+export const checkoutService = { settings: () => json('/api/settings'), create: payload => json('/api/checkout', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }) };

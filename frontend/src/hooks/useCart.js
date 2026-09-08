@@ -23,5 +23,5 @@ export function useCart() {
     .filter(item => item.qty > 0));
   const remove = id => setItems(current => current.filter(item => item.id !== id));
 
-  return { items, isOpen, summary, add, change, remove, open: () => setIsOpen(true), close: () => setIsOpen(false) };
+  return { items, isOpen, summary, add, change, remove, clear: () => setItems([]), open: () => setIsOpen(true), close: () => setIsOpen(false) };
 }

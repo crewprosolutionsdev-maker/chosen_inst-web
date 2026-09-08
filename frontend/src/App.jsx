@@ -11,8 +11,11 @@ import { AdminCategoriesPage } from './pages/admin/AdminCategoriesPage';
 import { AdminLoginPage } from './pages/admin/AdminLoginPage';
 import { AdminProductFormPage } from './pages/admin/AdminProductFormPage';
 import { AdminProductsPage } from './pages/admin/AdminProductsPage';
+import { AdminSettingsPage } from './pages/admin/AdminSettingsPage';
+import { CheckoutPage } from './pages/CheckoutPage';
+import { CheckoutResultPage } from './pages/CheckoutResultPage';
 
-function Storefront() { const cart = useCart(); return <StoreLayout cart={cart}><Routes><Route path="/" element={<HomePage onAdd={cart.add}/>}/><Route path="/productos" element={<ProductsPage onAdd={cart.add}/>}/><Route path="/producto/:slug" element={<ProductDetailPage onAdd={cart.add}/>}/><Route path="/contacto" element={<ContactPage/>}/></Routes></StoreLayout>; }
+function Storefront() { const cart = useCart(); return <StoreLayout cart={cart}><Routes><Route path="/" element={<HomePage onAdd={cart.add}/>}/><Route path="/productos" element={<ProductsPage onAdd={cart.add}/>}/><Route path="/producto/:slug" element={<ProductDetailPage onAdd={cart.add}/>}/><Route path="/checkout" element={<CheckoutPage cart={cart}/>}/><Route path="/checkout/resultado" element={<CheckoutResultPage/>}/><Route path="/contacto" element={<ContactPage/>}/></Routes></StoreLayout>; }
 function AdminScreen({ children }) { return <AdminRoute><AdminLayout>{children}</AdminLayout></AdminRoute>; }
 
-export default function App() { return <Routes><Route path="/admin/login" element={<AdminLoginPage/>}/><Route path="/admin" element={<Navigate to="/admin/productos" replace/>}/><Route path="/admin/productos" element={<AdminScreen><AdminProductsPage/></AdminScreen>}/><Route path="/admin/productos/nuevo" element={<AdminScreen><AdminProductFormPage/></AdminScreen>}/><Route path="/admin/productos/:id" element={<AdminScreen><AdminProductFormPage/></AdminScreen>}/><Route path="/admin/categorias" element={<AdminScreen><AdminCategoriesPage/></AdminScreen>}/><Route path="/*" element={<Storefront/>}/></Routes>; }
+export default function App() { return <Routes><Route path="/admin/login" element={<AdminLoginPage/>}/><Route path="/admin" element={<Navigate to="/admin/productos" replace/>}/><Route path="/admin/productos" element={<AdminScreen><AdminProductsPage/></AdminScreen>}/><Route path="/admin/productos/nuevo" element={<AdminScreen><AdminProductFormPage/></AdminScreen>}/><Route path="/admin/productos/:id" element={<AdminScreen><AdminProductFormPage/></AdminScreen>}/><Route path="/admin/categorias" element={<AdminScreen><AdminCategoriesPage/></AdminScreen>}/><Route path="/admin/configuracion" element={<AdminScreen><AdminSettingsPage/></AdminScreen>}/><Route path="/*" element={<Storefront/>}/></Routes>; }

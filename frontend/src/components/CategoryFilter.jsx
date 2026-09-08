@@ -1,0 +1,4 @@
+import { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import { categoryService } from '../services/categoryService';
+export function CategoryFilter(){const[categories,setCategories]=useState([]);const[params,setParams]=useSearchParams();const selected=params.get('category')||'';useEffect(()=>{categoryService.list().then(setCategories).catch(()=>setCategories([]));},[]);const select=category=>{const next=new URLSearchParams(params);if(category)next.set('category',category);else next.delete('category');setParams(next);};return <aside className="category-filter" aria-label="Categorías"><b>CATEGORÍAS</b><div><button type="button" className={!selected?'active':''} onClick={()=>select('')}>Todos</button>{categories.map(category=><button type="button" key={category.id} className={selected===category.name?'active':''} onClick={()=>select(category.name)}>{category.name}</button>)}</div></aside>}
