@@ -21,7 +21,10 @@ export const calculateLocalDelivery = async (shipping, customer) => {
     body: JSON.stringify({ origin: { location: { latLng: { latitude: origin.lat, longitude: origin.lng } } }, destination: { location: { latLng: { latitude: destination.lat, longitude: destination.lng } } }, travelMode: 'DRIVE', routingPreference: 'TRAFFIC_AWARE' }),
   });
   const data = await response.json();
-  if (!response.ok || !data.routes?.[0]) throw new Error('No pudimos calcular la ruta de entrega');
+  if (!response.ok || !data.routes?.[0]) {
+    console.error('Google Routes:', data.error?.message || data);
+    throw new Error('No pudimos calcular la ruta de entrega');
+  }
   const distanceKm = data.routes[0].distanceMeters / 1000;
   if (distanceKm > shipping.maximumLocalKm) return { available: false, distanceKm: Math.round(distanceKm * 10) / 10, maximumLocalKm: shipping.maximumLocalKm };
   const fuelRoundTripPerKm = (2 * shipping.fuelPrice) / shipping.vehicleKmPerLiter;
