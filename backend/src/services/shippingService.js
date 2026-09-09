@@ -5,7 +5,10 @@ const geocode = async (address, apiKey) => {
   url.searchParams.set('key', apiKey);
   const response = await fetch(url);
   const data = await response.json();
-  if (!response.ok || data.status !== 'OK' || !data.results?.[0]) throw new Error('No pudimos ubicar esa dirección');
+  if (!response.ok || data.status !== 'OK' || !data.results?.[0]) {
+    const detail = data.error_message || data.status || 'sin resultados';
+    throw Object.assign(new Error(`No pudimos ubicar esa dirección: ${detail}`), { status: 502 });
+  }
   return data.results[0].geometry.location;
 };
 
