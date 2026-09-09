@@ -10,6 +10,11 @@ const orderSchema = new mongoose.Schema({
   paymentStatus: { type: String, default: 'pending' },
   mercadoPagoPreferenceId: String,
   mercadoPagoPaymentId: String,
+  whatsappNotification: {
+    status: { type: String, enum: ['pending', 'sent', 'failed'], default: 'pending' },
+    messageId: String,
+    sentAt: Date,
+  },
 }, { timestamps: true });
 
 export const Order = mongoose.model('Order', orderSchema);

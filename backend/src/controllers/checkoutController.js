@@ -2,6 +2,7 @@ import { Order } from '../models/Order.js';
 import { Product } from '../models/Product.js';
 import { StoreSettings } from '../models/StoreSettings.js';
 import { calculateLocalDelivery } from '../services/shippingService.js';
+import { notifyNewOrderSafely } from '../services/whatsappService.js';
 
 const requiredCustomerFields = ['name', 'email', 'phone', 'address', 'city', 'province', 'postalCode'];
 
@@ -30,6 +31,7 @@ export async function createCheckout(req, res, next) {
     if (paymentMethod === 'mercadopago' && (!settings.mercadoPago.enabled || !process.env.MERCADO_PAGO_ACCESS_TOKEN)) return res.status(503).json({ message: 'Mercado Pago todavía no está configurado' });
     if (!['transfer', 'mercadopago'].includes(paymentMethod)) return res.status(400).json({ message: 'Elegí un método de pago disponible' });
     const order = await Order.create({ customer, items: orderItems, subtotal, shipping: { method: pickup ? 'pickup' : shippingMethod === 'local' ? 'local' : 'delivery', label: pickup ? settings.shipping.pickupLabel : shippingMethod === 'local' ? `Entrega local (${localQuote.distanceKm} km)` : 'Envío por correo', cost: shippingCost }, total: subtotal + shippingCost, paymentMethod });
+    void notifyNewOrderSafely(order);
     if (paymentMethod === 'transfer') {
       return res.status(201).json({ orderId: order.id, paymentMethod, total: order.total, transfer: settings.transfer });
     }
