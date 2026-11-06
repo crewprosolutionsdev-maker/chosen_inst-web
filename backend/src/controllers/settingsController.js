@@ -1,11 +1,12 @@
 import { StoreSettings } from '../models/StoreSettings.js';
+import { normalizeShippingSettings } from '../services/shippingService.js';
 
 const defaultShipping = { flatRate: 0, freeThreshold: 0, pickupEnabled: true, pickupLabel: 'Retiro a coordinar', localDeliveryEnabled: true, originAddress: 'Gabriel Miró 774, Bella Vista, Buenos Aires, Argentina', fuelPrice: 2169, vehicleKmPerLiter: 10, operatingMultiplier: 1.5, baseDeliveryFee: 2500, minimumDeliveryFee: 3500, maximumLocalKm: 15 };
 const defaults = { key: 'checkout', shipping: defaultShipping, transfer: { enabled: true, alias: '', cbu: '', holder: '' }, mercadoPago: { enabled: true } };
 const getSettings = () => StoreSettings.findOneAndUpdate({ key: 'checkout' }, { $setOnInsert: defaults }, { returnDocument: 'after', upsert: true }).lean();
 
-export async function publicSettings(_req, res, next) { try { const settings = await getSettings(); settings.shipping = { ...defaultShipping, ...settings.shipping }; settings.shipping.localDeliveryEnabled = settings.shipping.localDeliveryEnabled && Boolean(process.env.GOOGLE_MAPS_API_KEY); delete settings.shipping.originAddress; settings.mercadoPago.enabled = settings.mercadoPago.enabled && Boolean(process.env.MERCADO_PAGO_ACCESS_TOKEN); res.json(settings); } catch (error) { next(error); } }
-export async function adminSettings(_req, res, next) { try { res.json(await getSettings()); } catch (error) { next(error); } }
+export async function publicSettings(_req, res, next) { try { const settings = await getSettings(); settings.shipping = normalizeShippingSettings(settings.shipping); settings.shipping.localDeliveryEnabled = settings.shipping.localDeliveryEnabled && Boolean(process.env.GOOGLE_MAPS_API_KEY); delete settings.shipping.originAddress; settings.mercadoPago.enabled = settings.mercadoPago.enabled && Boolean(process.env.MERCADO_PAGO_ACCESS_TOKEN); res.json(settings); } catch (error) { next(error); } }
+export async function adminSettings(_req, res, next) { try { const settings = await getSettings(); settings.shipping = normalizeShippingSettings(settings.shipping); res.json(settings); } catch (error) { next(error); } }
 export async function updateSettings(req, res, next) {
   try {
     const data = {
