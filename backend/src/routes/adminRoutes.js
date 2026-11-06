@@ -4,9 +4,12 @@ import { createCategory, deleteCategory, listAdminCategories, updateCategory } f
 import { requireAdmin } from '../middleware/auth.js';
 import { uploadImage } from '../middleware/upload.js';
 import { adminSettings, updateSettings } from '../controllers/settingsController.js';
+import { confirmAdminOrderPayment, listAdminOrders } from '../controllers/adminOrderController.js';
 
 export const adminRouter = Router();
 adminRouter.use(requireAdmin);
+adminRouter.get('/orders', listAdminOrders);
+adminRouter.put('/orders/:id/confirm-payment', confirmAdminOrderPayment);
 adminRouter.get('/products', listAdminProducts);
 adminRouter.get('/products/:id', getAdminProduct);
 adminRouter.post('/products', uploadImage.single('image'), createAdminProduct);
@@ -18,3 +21,4 @@ adminRouter.put('/categories/:id', uploadImage.single('image'), updateCategory);
 adminRouter.delete('/categories/:id', deleteCategory);
 adminRouter.get('/settings', adminSettings);
 adminRouter.put('/settings', updateSettings);
+

@@ -10,5 +10,8 @@ export const adminService = {
   saveCategory: (id, form) => request(`/api/admin/categories${id ? `/${id}` : ''}`, { method: id ? 'PUT' : 'POST', body: form }),
   deleteCategory: id => request(`/api/admin/categories/${id}`, { method: 'DELETE' }),
   settings: () => request('/api/admin/settings'),
+  orders: () => request('/api/admin/orders'),
+  confirmOrderPayment: id => request(`/api/admin/orders/${id}/confirm-payment`, { method: 'PUT' }),
   saveSettings: settings => request('/api/admin/settings', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(settings) }),
 };
+
